@@ -7,6 +7,7 @@
           <option name="connectionName" value="kpn-dev-org" />
           <option name="connectionType" value="OAUTH" />
           <option name="defaultModuleName" value="KPNOrderProduct" />
+          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/kpn_dev_org/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>

@@ -1,0 +1,25 @@
+<!--
+ - Created by user on 9/12/23.
+ -->
+
+<!-- Available Products -->
+<template>
+    <div class="slds-m-vertical_medium" style="margin-top: 40px; margin-bottom: 40px;">
+        <lightning-card title={labels.Label_Title} icon-name="standard:product" >
+<!--            <div class="slds-m-vertical_medium">Selected PricebookId: {selectedPricebookId}</div>-->
+            <div style="height: 400px;">
+                <lightning-datatable
+                    key-field="productId"
+                    data={productListItems}
+                    columns={columnConfig}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    onsort={sortProducts}
+                    onrowaction={handleClickAction}
+                    hide-checkbox-column
+                >
+                </lightning-datatable>
+            </div>
+        </lightning-card>
+    </div>
+</template>

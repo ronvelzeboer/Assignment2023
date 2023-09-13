@@ -22,6 +22,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.sf" />
       <excludeFolder url="file://$MODULE_DIR$/.sfdx" />
     </content>
+    <orderEntry type="jdk" jdkName="IlluminatedCloud (KPNOrderProduct/kpn-dev-org)" jdkType="IlluminatedCloud" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
