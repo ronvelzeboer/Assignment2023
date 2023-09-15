@@ -19,12 +19,12 @@ public with sharing class OrderManager {
             Database.SaveResult[] itemsUpdateResults = Database.update(relatedOrderItems, false);
 
             if (!orderUpdateResults.isSuccess()) {
-                throw new OrderManagerException('An error occurred while updating the status of the Order');
+                throw new OrderManagerException('An error occurred while updating the status of the Order: ' + orderUpdateResults.getErrors());
             }
 
             for (Database.SaveResult result : itemsUpdateResults) {
                 if (!result.isSuccess()) {
-                    throw new OrderManagerException('An error occurred while updating the status of the related OrderItems');
+                    throw new OrderManagerException('An error occurred while updating the status of the related OrderItems: ' + result.getErrors());
                 }
             }
         } catch(Exception e) {

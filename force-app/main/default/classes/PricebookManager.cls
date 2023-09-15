@@ -4,12 +4,6 @@
 
 public with sharing class PricebookManager {
 
-
-//    public static Integer getNumberOfEntriesByPricebookId(Id pricebookId) {
-//        // TODO: implement
-//        return 200;
-//    }
-
     public static List<PricebookEntry> getEntriesByPricebookId(Id pricebookId, Integer recordLimit) {
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 

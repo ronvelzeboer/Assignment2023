@@ -122,7 +122,6 @@ export default class OrderProducts extends LightningElement {
 
     deleteRowAction(event) {
         const selectedOrderProduct = event.detail.row;
-        console.log('deleteRowAction:' + JSON.stringify(selectedOrderProduct, null, 4));
 
         if (selectedOrderProduct) {
             deleteOrderProduct( { orderProductId : selectedOrderProduct.orderItemId }).then((result) => {

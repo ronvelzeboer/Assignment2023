@@ -22,13 +22,14 @@ public class TestDataFactory {
             contracts.add(new Contract(
                 AccountId = account.Id,
                 StartDate = Date.today(),
-                Status = 'Draft'
+                ContractTerm = 12,
+                Status = KPNConstants.CONTRACT_STATUS_DRAFT
             ));
         }
         return contracts;
     }
 
-    public static List<Order> getOrderTestRecords(Account account, Contract contract, Integer numRecords) {
+    public static List<Order> getOrderTestRecords(Account account, Contract contract, Id pricebookId, Integer numRecords) {
         List<Order> orders = new List<Order>();
 
         for (Integer i = 0; i < numRecords; i++) {
@@ -36,13 +37,14 @@ public class TestDataFactory {
                 Status = KPNConstants.ORDER_STATUS_DRAFT,
                 EffectiveDate = Date.today(),
                 AccountId = account.Id,
-                ContractId = contract.Id
+                ContractId = contract.Id,
+                Pricebook2Id = pricebookId
             ));
         }
         return orders;
     }
 
-    public static List<OrderItem> getOrderItemsTestRecords(Id orderId, Integer numRecords, List<PricebookEntry> pricebookEntryPool) {
+    public static List<OrderItem> getOrderItemTestRecords(Id orderId, List<PricebookEntry> pricebookEntryPool, Integer numRecords) {
         List<OrderItem> orderItems = new List<OrderItem>();
 
         if (pricebookEntryPool.size() < numRecords) {
@@ -52,23 +54,15 @@ public class TestDataFactory {
             orderItems.add(new OrderItem(
                 OrderId = orderId,
                 PricebookEntryId = pricebookEntryPool[i].Id,
-                Status__c = KPNConstants.ORDER_ITEM_STATUS_DRAFT,
                 UnitPrice = pricebookEntryPool[i].UnitPrice,
+                Status__c = KPNConstants.ORDER_ITEM_STATUS_DRAFT,
                 Quantity = 1
             ));
         }
         return orderItems;
     }
 
-    public static Pricebook2 getPricebookTestRecord() {
-        return new Pricebook2(
-            Name = 'Test Pricebook',
-            IsActive = true,
-            Description = 'The Hitchhikers Price Guide to the Galaxy'
-        );
-    }
-
-    public static List<PricebookEntry> getPricebookEntryTestRecords(Id pricebookId, Integer numRecords, List<Product2> productPool) {
+    public static List<PricebookEntry> getPricebookEntryTestRecords(Id pricebookId, List<Product2> productPool, Integer numRecords) {
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 
         if (productPool.size() < numRecords) {
@@ -77,8 +71,9 @@ public class TestDataFactory {
         for (Integer i = 0; i < numRecords; i++) {
             pricebookEntries.add(new PricebookEntry(
                 Pricebook2Id = pricebookId,
+                Product2Id = productPool[i].Id,
                 UnitPrice = 42.00 + (i * 13),
-                Product2Id = productPool[i].Id
+                IsActive = true
             ));
         }
         return pricebookEntries;

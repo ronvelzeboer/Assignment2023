@@ -7,6 +7,8 @@
         <members>AvailableProductsController</members>
         <members>OrderManager</members>
         <members>KPNConstants</members>
+        <members>OrderManagerTest</members>
+        <members>TestDataFactory</members>
         <name>ApexClass</name>
     </types>
     <types>
