@@ -12,5 +12,4 @@ public with sharing class KPNConstants {
     public static final String ORDER_STATUS_ACTIVATED = 'Activated';
     public static final String ORDER_ITEM_STATUS_DRAFT = 'Draft';
     public static final String ORDER_ITEM_STATUS_ACTIVATED = 'Activated';
-
 }
