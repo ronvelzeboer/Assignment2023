@@ -25,6 +25,4 @@ public with sharing class PricebookManager {
         }
         return pricebookEntries;
     }
-
-
 }

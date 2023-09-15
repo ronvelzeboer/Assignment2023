@@ -4,11 +4,13 @@
 
 import { LightningElement, wire, api, track } from 'lwc';
 import { subscribe, publish, MessageContext } from 'lightning/messageService';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import RowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
 import AvailableProductRowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import saveOrderProduct from '@salesforce/apex/OrderProductsController.saveOrderProduct';
 import deleteOrderProduct from '@salesforce/apex/OrderProductsController.deleteOrderProduct';
+import activateOrder from '@salesforce/apex/OrderProductsController.activateOrder';
 import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
 
 import Label_Title from '@salesforce/label/c.OrderProducts_Title';
@@ -20,6 +22,7 @@ import Label_TableHeader_Status from '@salesforce/label/c.OrderProducts_TableHea
 
 export default class OrderProducts extends LightningElement {
     @api recordId;
+    @track orderStatus;
     @track orderProducts = [];
 
     subscription = null;
@@ -61,19 +64,51 @@ export default class OrderProducts extends LightningElement {
         }
     }
 
+    @wire(getRecord, { recordId: '$recordId', fields: [ 'Order.Status' ] })
+    wiredOrder({ data, error }) {
+        if (data) {
+            this.orderStatus = getFieldValue(data, 'Order.Status');
+
+        } else if (error) {
+            console.log(error);
+        }
+    }
+
     get isActivateBtnDisabled() {
-        return this.orderProducts.length === 0;
+        return this.orderProducts.length === 0 || this.isActivatedOrder();
+    }
+
+   isActivatedOrder() {
+        return this.orderStatus === 'Activated';
     }
 
     subscribeToAvailableProductChannel() {
         this.subscription = subscribe(this.messageContext, AvailableProductRowSelectedChannel, (message) => this.handleMessage(message));
     }
 
+    handleMessage(message) {
+        if (this.isActivatedOrder()) { return; }
+
+        if (!message.pricebookEntryId || !message.productName || !message.unitPrice) {
+            console.log('Missing required keys in message format' + JSON.stringify(message, null, 4));
+            return;
+        }
+        this.addOrderProduct(message);
+    }
+
     handleActivateBtnClick(event) {
-        console.log('Activate Order and Order Products');
+        if (this.isActivatedOrder()) { return; }
+
+        activateOrder({ orderId: this.recordId }).then((result) => {
+            this.orderStatus = 'Activated';
+        }).catch((error) => {
+            console.log('Activation failed: ' + JSON.stringify(error, null, 4));
+        })
     }
 
     handleRowAction(event) {
+        if (this.isActivatedOrder()) { return; }
+
         try {
             const eventAction = event.detail.action.name;
 
@@ -109,14 +144,6 @@ export default class OrderProducts extends LightningElement {
             pricebookEntryId: deletedOrderProduct.pricebookEntryId,
         };
         publish(this.messageContext, RowDeletedChannel, messagePayload);
-    }
-
-    handleMessage(message) {
-        if (!message.pricebookEntryId || !message.productName || !message.unitPrice) {
-            console.log('Missing required keys in message format' + JSON.stringify(message, null, 4));
-            return;
-        }
-        this.addOrderProduct(message);
     }
 
     addOrderProduct(data) {

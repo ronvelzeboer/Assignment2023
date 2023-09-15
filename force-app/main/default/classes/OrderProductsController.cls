@@ -60,16 +60,17 @@ public with sharing class OrderProductsController
     public static List<OrderProductListItem> getOrderProductListItemsByOrderId(Id orderId) {
         List<OrderProductListItem> orderProducts = new List<OrderProductListItem>();
 
-        List<OrderItem> records = [
-            SELECT Id, PricebookEntryId, Product2.Name, Quantity, UnitPrice, TotalPrice, Status__c
-            FROM OrderItem
-            WHERE OrderId= :orderId
-        ];
+        List<OrderItem> records = OrderManager.getOrderItemsByOrderId(orderId);
         for (OrderItem record : records) {
             OrderProductListItem listItem = getMappedOrderProductListItemInstance(record);
             orderProducts.add(listItem);
         }
         return orderProducts;
+    }
+
+    @AuraEnabled
+    public static void activateOrder(Id orderId) {
+        OrderManager.activateOrderByOrderId(orderId);
     }
 
     public static OrderProductListItem getMappedOrderProductListItemInstance(OrderItem record) {

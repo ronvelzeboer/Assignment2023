@@ -5,6 +5,8 @@
         <members>ListProduct</members>
         <members>OrderProductsController</members>
         <members>AvailableProductsController</members>
+        <members>OrderManager</members>
+        <members>KPNConstants</members>
         <name>ApexClass</name>
     </types>
     <types>
