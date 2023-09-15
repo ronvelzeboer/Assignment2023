@@ -9,13 +9,13 @@
 <!--            <div class="slds-m-vertical_medium">Selected PricebookId: {selectedPricebookId}</div>-->
             <div style="height: 400px;">
                 <lightning-datatable
-                    key-field="productId"
+                    key-field="pricebookEntryId"
                     data={productListItems}
                     columns={columnConfig}
                     sorted-by={sortedBy}
                     sorted-direction={sortedDirection}
                     onsort={sortProducts}
-                    onrowaction={handleClickAction}
+                    onrowaction={handleRowAction}
                     hide-checkbox-column
                 >
                 </lightning-datatable>

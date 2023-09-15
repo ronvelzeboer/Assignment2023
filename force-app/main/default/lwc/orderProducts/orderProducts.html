@@ -6,11 +6,15 @@
 <template>
     <div class="slds-m-vertical_medium" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
         <lightning-card title={labels.Label_Title} icon-name="standard:product" >
+            <div class="slds-m-vertical_small">
+                <lightning-button variant="neutral" label="Activate" onclick={handleActivateBtnClick} class="slds-m-left_x-small" disabled={isActivateBtnDisabled}></lightning-button>
+            </div>
             <lightning-datatable
-                    key-field="productId"
-                    data={orderProducts}
-                    columns={columnConfig}
-                    hide-checkbox-column
+                key-field="orderItemId"
+                data={orderProducts}
+                columns={columnConfig}
+                onrowaction={handleRowAction}
+                hide-checkbox-column
             >
             </lightning-datatable>
         </lightning-card>

@@ -3,6 +3,8 @@
     <types>
         <members>PricebookManager</members>
         <members>ListProduct</members>
+        <members>OrderProductsController</members>
+        <members>AvailableProductsController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -13,6 +15,7 @@
     <types>
         <members>AvailableProduct_RowSelection</members>
         <members>AvailableProduct_RowSelected</members>
+        <members>OrderProduct_RowDeleted</members>
         <name>LightningMessageChannel</name>
     </types>
     <version>58.0</version>

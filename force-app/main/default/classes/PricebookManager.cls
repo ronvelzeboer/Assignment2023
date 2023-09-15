@@ -5,13 +5,16 @@
 public with sharing class PricebookManager {
     public class ProductListItem {
         @AuraEnabled
+        public String pricebookEntryId;
+
+        @AuraEnabled
         public String productId;
 
         @AuraEnabled
         public String productName;
 
         @AuraEnabled
-        public Decimal productListPrice;
+        public Decimal unitPrice;
     }
 
     public static Integer getNumberOfEntriesByPricebookId(Id pricebookId) {
@@ -24,7 +27,7 @@ public with sharing class PricebookManager {
 
         try {
             pricebookEntries = [
-                SELECT UnitPrice, Product2Id
+                SELECT Id, Product2.Name, UnitPrice, Product2Id
                 FROM PricebookEntry
                 WHERE Pricebook2Id = :pricebookId
                 LIMIT :recordLimit
@@ -35,40 +38,19 @@ public with sharing class PricebookManager {
         return pricebookEntries;
     }
 
-    public static List<Product2> getProductsByProductIds(List<Id> productIds) {
-        List<Product2> products = new List<Product2>();
-
-        try {
-            products = [
-                SELECT Id, Name
-                FROM Product2
-                WHERE Id IN :productIds
-            ];
-        } catch (Exception e) {
-            // TODO: implement error handling code
-        }
-        return products;
-    }
-
     @AuraEnabled(Cacheable=true)
     public static List<ProductListItem> getProductListItemsByPricebookId(Id pricebookId, Integer recordLimit) {
         List<PricebookEntry> pricebookEntries = getEntriesByPricebookId(pricebookId, recordLimit);
-        List<Id> productIds = new List<Id>();
-        Map<Id, ProductListItem> listItems = new Map<Id, ProductListItem>();
+        List<ProductListItem> listItems = new List<ProductListItem>();
 
         for (PricebookEntry entry : pricebookEntries) {
-            productIds.add(entry.Product2Id);
-
             ProductListItem pli = new ProductListItem();
+            pli.pricebookEntryId = entry.Id;
             pli.productId = entry.Product2Id;
-            pli.productListPrice = entry.UnitPrice;
-            listItems.put(pli.productId, pli);
+            pli.unitPrice = entry.UnitPrice;
+            pli.productName = entry.Product2.Name;
+            listItems.add(pli);
         }
-        List<Product2> products = getProductsByProductIds(productIds);
-
-        for (Product2 product : products) {
-            listItems.get(product.Id).productName = product.Name;
-        }
-        return listItems.values();
+        return listItems;
     }
 }

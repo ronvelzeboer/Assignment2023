@@ -6,10 +6,12 @@ import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex'
 import getProductListItems from '@salesforce/apex/PricebookManager.getProductListItemsByPricebookId';
-import { publish, MessageContext } from 'lightning/messageService';
+import { publish, subscribe, MessageContext } from 'lightning/messageService';
 import RowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
+import OrderProductRowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import stylesheets from '@salesforce/resourceUrl/stylesheets';
+import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
 
 import Label_Title from '@salesforce/label/c.AvailableProducts_Title';
 import Label_TableHeader_Name from '@salesforce/label/c.AvailableProducts_TableHeader_Name';
@@ -21,34 +23,10 @@ export default class AvailableProducts extends LightningElement {
     @track productListItems = [];
     @track sortedBy = 'productName';
     @track sortedDirection = 'asc';
+
     cssLoaded = false;
-
+    subscription = null;
     assignedOrderProductMap = {};
-
-    @wire(MessageContext)
-    messageContext;
-
-    @wire(getRecord, { recordId: '$recordId', fields: [ 'Order.Pricebook2Id' ] })
-    wiredOrder({ data, error }) {
-        if (data) {
-            this.selectedPricebookId = getFieldValue(data, 'Order.Pricebook2Id');
-
-        } else if (error) {
-            console.log(error);
-        }
-    }
-
-    @wire(getProductListItems, { pricebookId: '$selectedPricebookId', recordLimit: '200'})
-    wiredProductListItems({ error, data }) {
-        console.log('wiredProductListItems => ' + data);
-        if (data) {
-            this.productListItems = data;
-            this.doSortProducts();
-        } else if (error) {
-            console.log(error);
-            this.productListItems = [];
-        }
-    }
 
     labels = {
         Label_Title,
@@ -62,31 +40,85 @@ export default class AvailableProducts extends LightningElement {
             fixedWidth: 36,
             typeAttributes: {
                 iconName: 'utility:add',
-                variant: 'bare'
+                variant: 'bare',
+                name: 'add',
             },
             cellAttributes: { class: { fieldName: 'backgroundStyle' } }
         },
         { label: this.labels.Label_TableHeader_Name, fieldName: "productName", type: 'text', sortable: 'true', cellAttributes: { class: { fieldName: 'backgroundStyle' } } },
-        { label: this.labels.Label_TableHeader_ListPrice, fieldName: "productListPrice", type: 'currency', sortable: 'true', cellAttributes: { class: { fieldName: 'backgroundStyle' } } },
-
+        { label: this.labels.Label_TableHeader_ListPrice, fieldName: "unitPrice", type: 'currency', sortable: 'true', fixedWidth: 125, cellAttributes: { class: { fieldName: 'backgroundStyle' } } },
     ];
 
-    handleClickAction(event) {
+    @wire(MessageContext)
+    messageContext;
+
+    @wire(getOrderProductListItems, { orderId: '$recordId' })
+    wiredOrderProducts({ data, error } ) {
+        if (data) {
+            data.forEach((obj) => {
+                this.assignedOrderProductMap[obj.pricebookEntryId] = {
+                    pricebookEntryId: obj.pricebookEntryId,
+                    productName: obj.productName,
+                    unitPrice: obj.unitPrice,
+                };
+            });
+        } else if (error) {
+            console.log('Error:' + JSON.stringify(error));
+            // TODO
+        }
+    }
+
+    @wire(getRecord, { recordId: '$recordId', fields: [ 'Order.Pricebook2Id' ] })
+    wiredOrder({ data, error }) {
+        if (data) {
+            this.selectedPricebookId = getFieldValue(data, 'Order.Pricebook2Id');
+
+        } else if (error) {
+            console.log(error);
+        }
+    }
+
+    @wire(getProductListItems, { pricebookId: '$selectedPricebookId', recordLimit: '200'})
+    wiredProductListItems({ error, data }) {
+        if (data) {
+            this.productListItems = data;
+            this.doSortProducts();
+        } else if (error) {
+            console.log(error);
+            this.productListItems = [];
+        }
+    }
+
+    handleRowAction(event) {
+        try {
+            const eventAction = event.detail.action.name;
+
+            if (eventAction == 'add') {
+                this.addRowAction(event);
+            }
+        } catch (error) {
+            console.log('An error occurred while processing the row action event. Error: ' + error.message);
+        }
+    }
+
+    addRowAction(event) {
        const selectedProduct = event.detail.row;
 
         if (selectedProduct) {
-            let productId = selectedProduct.productId;
+            let pricebookEntryId = selectedProduct.pricebookEntryId;
 
-            if (!this.assignedOrderProductMap[productId]) {
-                this.assignedOrderProductMap[productId] = {
-                    productId: productId, productName: selectedProduct.productName, productListPrice: selectedProduct.productListPrice
+            if (!this.assignedOrderProductMap[pricebookEntryId]) {
+                this.assignedOrderProductMap[pricebookEntryId] = {
+                    pricebookEntryId: pricebookEntryId,
+                    productName: selectedProduct.productName,
+                    unitPrice: selectedProduct.unitPrice
                 };
                 this.doSortProducts();
             }
             const messagePayload = {
-                recordId: productId,
+                pricebookEntryId: pricebookEntryId,
                 productName: selectedProduct.productName,
-                productListPrice: selectedProduct.productListPrice,
+                unitPrice: selectedProduct.unitPrice,
                 quantity: 1
             };
             publish(this.messageContext, RowSelectedChannel, messagePayload);
@@ -104,7 +136,7 @@ export default class AvailableProducts extends LightningElement {
         let parseData = JSON.parse(JSON.stringify(this.productListItems));
 
         let keyValue = (x) => {
-            return x[this.sortedBy].toLowerCase();
+            return x[this.sortedBy];
         };
         let isReverseSort = this.sortedDirection === 'asc' ? 1 : -1;
 
@@ -117,9 +149,11 @@ export default class AvailableProducts extends LightningElement {
         parseData.map((e, index) => {
             e.sortWeight = (numberOfListProducts - index);
 
-            if (this.assignedOrderProductMap[e.productId]) {
+            if (this.assignedOrderProductMap[e.pricebookEntryId]) {
                 e.sortWeight += numberOfListProducts;
                 e.backgroundStyle = 'datatable-assigned-row';
+            } else {
+                e.backgroundStyle = '';
             }
         });
 
@@ -130,6 +164,21 @@ export default class AvailableProducts extends LightningElement {
 
         this.productListItems = parseData;
         console.log(JSON.stringify(this.productListItems, null, 4));
+    }
+
+    subscribeToOrderProductDeleteChannel() {
+        this.subscription = subscribe(this.messageContext, OrderProductRowDeletedChannel, (message) => this.handleOrderProductDeleteMessage(message));
+    }
+
+    handleOrderProductDeleteMessage(message) {
+        if (message.pricebookEntryId) {
+            delete this.assignedOrderProductMap[message.pricebookEntryId];
+            this.doSortProducts();
+        }
+    }
+
+    connectedCallback() {
+        this.subscribeToOrderProductDeleteChannel();
     }
 
     renderedCallback() {

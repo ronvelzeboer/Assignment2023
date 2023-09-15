@@ -4,19 +4,19 @@
     <isExposed>true</isExposed>
     <description>Fires when user selects a product from the Available Products list</description>
     <lightningMessageFields>
-        <fieldName>recordId</fieldName>
-        <description>This is the record Id of the product that is clicked</description>
+        <fieldName>pricebookEntryId</fieldName>
+        <description>This is the record Id of the pricebookEntry of the product that is clicked</description>
     </lightningMessageFields>
     <lightningMessageFields>
         <fieldName>productName</fieldName>
         <description>Name of product to be added</description>
     </lightningMessageFields>
     <lightningMessageFields>
-        <fieldName>productListPrice</fieldName>
+        <fieldName>unitPrice</fieldName>
         <description>List price of product to be added</description>
     </lightningMessageFields>
     <lightningMessageFields>
-        <fieldName>Quantity</fieldName>
+        <fieldName>quantity</fieldName>
         <description>Quantity of product to be added</description>
     </lightningMessageFields>
 </LightningMessageChannel>
