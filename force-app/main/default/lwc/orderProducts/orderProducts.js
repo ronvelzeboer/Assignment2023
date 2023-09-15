@@ -5,8 +5,8 @@
 import { LightningElement, wire, api, track } from 'lwc';
 import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import { refreshApex } from '@salesforce/apex';
-import AvailableProductRowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import RowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
+import AvailableProductRowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import saveOrderProduct from '@salesforce/apex/OrderProductsController.saveOrderProduct';
 import deleteOrderProduct from '@salesforce/apex/OrderProductsController.deleteOrderProduct';
 import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
@@ -47,7 +47,6 @@ export default class OrderProducts extends LightningElement {
         { label: this.labels.Label_TableHeader_UnitPrice, fieldName: "unitPrice", type: 'currency', fixedWidth: 125 },
         { label: this.labels.Label_TableHeader_Quantity, fieldName: "quantity", type: 'integer', fixedWidth: 100 },
         { label: this.labels.Label_TableHeader_TotalPrice, fieldName: "totalPrice", type: 'currency', fixedWidth: 125 },
-        { label: this.labels.Label_TableHeader_Status, fieldName: "status", type: 'text', fixedWidth: 125 },
     ];
 
     @wire(MessageContext)
@@ -56,22 +55,9 @@ export default class OrderProducts extends LightningElement {
     @wire(getOrderProductListItems, { orderId: '$recordId' })
     wiredOrderProducts({ data, error }) {
         if (data) {
-//            console.log('Error:' + JSON.stringify(data, null, 4));
-            this.orderProducts = data.map((obj) => {
-                obj = {
-                    orderItemId: obj.orderItemId,
-                    pricebookEntryId: obj.pricebookEntryId,
-                    productName: obj.productName,
-                    unitPrice: obj.unitPrice,
-                    quantity: obj.quantity,
-                    totalPrice: obj.totalPrice,
-                    status: obj.status,
-                };
-                return obj;
-            })
+            this.orderProducts = data;
         } else if (error) {
             console.log('Error:' + JSON.stringify(error));
-            // TODO
         }
     }
 
@@ -101,6 +87,7 @@ export default class OrderProducts extends LightningElement {
 
     deleteRowAction(event) {
         const selectedOrderProduct = event.detail.row;
+        console.log('deleteRowAction:' + JSON.stringify(selectedOrderProduct, null, 4));
 
         if (selectedOrderProduct) {
             deleteOrderProduct( { orderProductId : selectedOrderProduct.orderItemId }).then((result) => {
@@ -164,21 +151,18 @@ export default class OrderProducts extends LightningElement {
     handleSaveOrderProduct(pricebookEntryId) {
         const orderProductListItem = this.orderProducts.find((obj) => obj.pricebookEntryId == pricebookEntryId);
 
-        // TODO change to other object
         const orderProductRecord = {
-            Id: (orderProductListItem.orderItemId.startsWith('TMP-') ? null : orderProductListItem.orderItemId),
-            OrderId: this.recordId,
-            PricebookEntryId: orderProductListItem.pricebookEntryId,
-            ListPrice: orderProductListItem.unitPrice,
-            UnitPrice: orderProductListItem.unitPrice,
-            Quantity: orderProductListItem.quantity,
+            orderItemId: (orderProductListItem.orderItemId.startsWith('TMP-') ? null : orderProductListItem.orderItemId),
+            orderId: this.recordId,
+            pricebookEntryId: orderProductListItem.pricebookEntryId,
+            unitPrice: orderProductListItem.unitPrice,
+            quantity: orderProductListItem.quantity,
         }
-
-        saveOrderProduct( { orderProduct: orderProductRecord }).then((result) => {
+        console.log('orderProductRecord:' + JSON.stringify(orderProductRecord, null, 4));
+        saveOrderProduct( { record: orderProductRecord }).then((result) => {
             this.orderProducts = this.orderProducts.map((obj) => {
                 if (obj.pricebookEntryId === pricebookEntryId) {
-                    obj.orderItemId = result.Id;
-                    obj.status = result.Status;
+                    obj.orderItemId = result.orderItemId;
                 }
                 return obj;
             });

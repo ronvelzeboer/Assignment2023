@@ -4,13 +4,13 @@
 
 import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
-import { refreshApex } from '@salesforce/apex'
-import getProductListItems from '@salesforce/apex/PricebookManager.getProductListItemsByPricebookId';
+import { loadStyle } from 'lightning/platformResourceLoader';
 import { publish, subscribe, MessageContext } from 'lightning/messageService';
+import { refreshApex } from '@salesforce/apex'
+import stylesheets from '@salesforce/resourceUrl/stylesheets';
 import RowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import OrderProductRowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
-import { loadStyle } from 'lightning/platformResourceLoader';
-import stylesheets from '@salesforce/resourceUrl/stylesheets';
+import getProductListItems from '@salesforce/apex/AvailableProductsController.getProductListItemsByPricebookId';
 import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
 
 import Label_Title from '@salesforce/label/c.AvailableProducts_Title';

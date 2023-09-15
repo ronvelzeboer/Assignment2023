@@ -6,38 +6,44 @@ public with sharing class OrderProductsController
 {
     public class OrderProductListItem {
         @AuraEnabled
-        public Id orderItemId;
+        public Id orderItemId { get; set; }
 
         @AuraEnabled
-        public Id pricebookEntryId;
+        public Id orderId { get; set; }
 
         @AuraEnabled
-        public String productName;
+        public Id pricebookEntryId { get; set; }
 
         @AuraEnabled
-        public Integer quantity;
+        public String productName { get; set; }
 
         @AuraEnabled
-        public Decimal unitPrice;
+        public Integer quantity { get; set; }
 
         @AuraEnabled
-        public Decimal totalPrice;
+        public Decimal unitPrice { get; set; }
 
         @AuraEnabled
-        public String status;
+        public Decimal totalPrice { get; set; }
+
+        @AuraEnabled
+        public String status { get; set; }
     }
 
     @AuraEnabled
-    public static OrderItem saveOrderProduct(OrderItem orderProduct) {
+    public static OrderProductListItem saveOrderProduct(OrderProductListItem record) {
 
-        if (orderProduct.Id == null && !Schema.SObjectType.OrderItem.isCreateable() ) {
+        if (record.orderItemId == null && !Schema.SObjectType.OrderItem.isCreateable() ) {
             throw new SecurityException('Insufficient permissions to insert order products!');
         }
-        if (orderProduct.Id != null && !Schema.SObjectType.OrderItem.isUpdateable()) {
+        if (record.orderItemId != null && !Schema.SObjectType.OrderItem.isUpdateable()) {
             throw new SecurityException('Insufficient permissions to update order products!');
         }
-        upsert orderProduct;
-        return orderProduct;
+        OrderItem orderItem = getMappedOrderItemInstance(record);
+        upsert orderItem;
+
+        record.orderItemId = orderItem.Id;
+        return record;
     }
 
     @AuraEnabled
@@ -55,19 +61,38 @@ public with sharing class OrderProductsController
         List<OrderProductListItem> orderProducts = new List<OrderProductListItem>();
 
         List<OrderItem> records = [
-            SELECT Id, PricebookEntryId, Product2.Name, Quantity, UnitPrice, TotalPrice, Status__c FROM OrderItem WHERE OrderId= :orderId
+            SELECT Id, PricebookEntryId, Product2.Name, Quantity, UnitPrice, TotalPrice, Status__c
+            FROM OrderItem
+            WHERE OrderId= :orderId
         ];
         for (OrderItem record : records) {
-            OrderProductListItem listItem = new OrderProductListItem();
-            listItem.orderItemId = record.Id;
-            listItem.productName = record.Product2.Name;
-            listItem.pricebookEntryId = record.PricebookEntryId;
-            listItem.unitPrice = record.UnitPrice;
-            listItem.quantity = Integer.valueOf(record.Quantity);
-            listItem.totalPrice = record.TotalPrice;
-            listItem.status = record.Status__c;
+            OrderProductListItem listItem = getMappedOrderProductListItemInstance(record);
             orderProducts.add(listItem);
         }
         return orderProducts;
+    }
+
+    public static OrderProductListItem getMappedOrderProductListItemInstance(OrderItem record) {
+        OrderProductListItem listItem = new OrderProductListItem();
+        listItem.orderItemId = record.Id;
+        listItem.productName = record.Product2.Name;
+        listItem.pricebookEntryId = record.PricebookEntryId;
+        listItem.unitPrice = record.UnitPrice;
+        listItem.quantity = Integer.valueOf(record.Quantity);
+        listItem.totalPrice = record.TotalPrice;
+        listItem.status = record.Status__c;
+        return listItem;
+    }
+
+    public static OrderItem getMappedOrderItemInstance(OrderProductListItem listItem) {
+        OrderItem record = new OrderItem(
+            Id = listItem.orderItemId,
+            OrderId = listItem.orderId,
+            PricebookEntryId = listItem.pricebookEntryId,
+            ListPrice = listItem.unitPrice,
+            UnitPrice = listItem.unitPrice,
+            Quantity = listItem.quantity
+        );
+        return record;
     }
 }
