@@ -3,7 +3,7 @@
  */
 
 @IsTest(SeeAllData=false)
-public class OrderManagerTest {
+private class OrderManagerTest {
 
     @TestSetup
     static void setup() {

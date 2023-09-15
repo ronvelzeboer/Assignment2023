@@ -3,7 +3,7 @@
  */
 
 @IsTest(SeeAllData=false)
-public class OrderProductsControllerTest {
+private class OrderProductsControllerTest {
 
     @TestSetup
     static void setup() {
@@ -126,6 +126,5 @@ public class OrderProductsControllerTest {
         // verify retrieved order products count
         System.assertEquals(5, orderProducts.size());
     }
-
 }
 

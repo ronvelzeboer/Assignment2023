@@ -3,7 +3,7 @@
  */
 
 @IsTest(SeeAllData=false)
-public class PricebookManagerTest {
+private class PricebookManagerTest {
 
     @TestSetup
     static void setup() {

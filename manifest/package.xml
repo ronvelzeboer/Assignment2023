@@ -11,6 +11,7 @@
         <members>TestDataFactory</members>
         <members>PricebookManagerTest</members>
         <members>OrderProductsControllerTest</members>
+        <members>AvailableProductsControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -23,6 +24,26 @@
         <members>AvailableProduct_RowSelected</members>
         <members>OrderProduct_RowDeleted</members>
         <name>LightningMessageChannel</name>
+    </types>
+    <types>
+        <members>OrderItem.Status__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Order_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>AvailableProducts_TableHeader_ListPrice</members>
+        <members>AvailableProducts_TableHeader_Name</members>
+        <members>AvailableProducts_Title</members>
+        <members>OrderProducts_TableHeader_Name</members>
+        <members>OrderProducts_TableHeader_Quantity</members>
+        <members>OrderProducts_TableHeader_Status</members>
+        <members>OrderProducts_TableHeader_TotalPrice</members>
+        <members>OrderProducts_TableHeader_UnitPrice</members>
+        <members>OrderProducts_Title</members>
+        <name>CustomLabel</name>
     </types>
     <version>58.0</version>
 </Package>

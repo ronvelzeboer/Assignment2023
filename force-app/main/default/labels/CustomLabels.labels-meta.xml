@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>AvailableProducts_TableHeader_ListPrice</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AvailableProducts_TableHeader_ListPrice</shortDescription>
+        <value>List Price</value>
+    </labels>
+    <labels>
+        <fullName>AvailableProducts_TableHeader_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AvailableProducts_TableHeader_Name</shortDescription>
+        <value>Name</value>
+    </labels>
+    <labels>
+        <fullName>AvailableProducts_Title</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>AvailableProducts_Title</shortDescription>
+        <value>Available Products</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_TableHeader_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_TableHeader_Name</shortDescription>
+        <value>Name</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_TableHeader_Quantity</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_TableHeader_Quantity</shortDescription>
+        <value>Quantity</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_TableHeader_Status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_TableHeader_Status</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_TableHeader_TotalPrice</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_TableHeader_TotalPrice</shortDescription>
+        <value>Total Price</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_TableHeader_UnitPrice</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_TableHeader_UnitPrice</shortDescription>
+        <value>Unit Price</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Title</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Title</shortDescription>
+        <value>Order Products</value>
+    </labels>
+</CustomLabels>
