@@ -31,6 +31,21 @@ public with sharing class OrderProductsController
     }
 
     @AuraEnabled
+    public static void activateOrder(Id orderId) {
+        OrderManager.activateOrderByOrderId(orderId);
+    }
+
+    @AuraEnabled
+    public static void deleteOrderProduct(Id orderProductId) {
+
+        if (!Schema.SObjectType.OrderItem.isDeletable()) {
+            throw new SecurityException('Insufficient permissions to delete order products!');
+        }
+        OrderItem item = new OrderItem(Id = orderProductId);
+        delete item;
+    }
+
+    @AuraEnabled
     public static OrderProductListItem saveOrderProduct(OrderProductListItem record) {
 
         if (record.orderItemId == null && !Schema.SObjectType.OrderItem.isCreateable() ) {
@@ -46,16 +61,6 @@ public with sharing class OrderProductsController
         return record;
     }
 
-    @AuraEnabled
-    public static void deleteOrderProduct(Id orderProductId) {
-
-        if (!Schema.SObjectType.OrderItem.isDeletable()) {
-            throw new SecurityException('Insufficient permissions to delete order products!');
-        }
-        OrderItem item = new OrderItem(Id = orderProductId);
-        delete item;
-    }
-
     @AuraEnabled(Cacheable=true)
     public static List<OrderProductListItem> getOrderProductListItemsByOrderId(Id orderId) {
         List<OrderProductListItem> orderProducts = new List<OrderProductListItem>();
@@ -66,11 +71,6 @@ public with sharing class OrderProductsController
             orderProducts.add(listItem);
         }
         return orderProducts;
-    }
-
-    @AuraEnabled
-    public static void activateOrder(Id orderId) {
-        OrderManager.activateOrderByOrderId(orderId);
     }
 
     public static OrderProductListItem getMappedOrderProductListItemInstance(OrderItem record) {

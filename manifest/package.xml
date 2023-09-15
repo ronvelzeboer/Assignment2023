@@ -9,6 +9,8 @@
         <members>KPNConstants</members>
         <members>OrderManagerTest</members>
         <members>TestDataFactory</members>
+        <members>PricebookManagerTest</members>
+        <members>OrderProductsControllerTest</members>
         <name>ApexClass</name>
     </types>
     <types>

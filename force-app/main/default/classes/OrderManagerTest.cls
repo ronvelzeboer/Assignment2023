@@ -7,7 +7,7 @@ public class OrderManagerTest {
 
     @TestSetup
     static void setup() {
-        // create test Pricebook
+        // get standardPriceBookId
         Id standardPricebookId = Test.getStandardPricebookId();
 
         // create test Pricebook Entries
@@ -20,22 +20,21 @@ public class OrderManagerTest {
         insert pricebookEntries;
 
         // create test Account
-        List<Account> accountRecords = TestDataFactory.getAccountRecords(1);
-        insert accountRecords;
-        Account testAccount = accountRecords[0];
+        Account testAccount = TestDataFactory.getAccountRecords(1)[0];
+        insert testAccount;
 
-        // create test Contract
-        List<Contract> contractRecords = TestDataFactory.getContractTestRecords(testAccount, 1);
-        insert contractRecords;
-        Contract testContract = contractRecords[0];
+        // create test Contract and active
+        Contract testContract = TestDataFactory.getContractTestRecords(testAccount, 1)[0];
+        insert testContract;
+
         testContract.Status = KPNConstants.CONTRACT_STATUS_ACTIVATED;
         update testContract;
 
         // create test Order
-        List<Order> orderRecords = TestDataFactory.getOrderTestRecords(testAccount, testContract, standardPricebookId, 1);
-        insert orderRecords;
-        Order testOrderRecord = orderRecords[0];
+        Order testOrderRecord = TestDataFactory.getOrderTestRecords(testAccount, testContract, standardPricebookId, 1)[0];
+        insert testOrderRecord;
 
+        // create test OrderItems
         List<OrderItem> orderItemRecords = TestDataFactory.getOrderItemTestRecords(testOrderRecord.Id, pricebookEntries, 3);
         insert orderItemRecords;
     }
