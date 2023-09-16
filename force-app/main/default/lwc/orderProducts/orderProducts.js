@@ -6,8 +6,9 @@ import { LightningElement, wire, api, track } from 'lwc';
 import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
-import { refreshApex } from '@salesforce/apex';
+import LightningConfirm from 'lightning/confirm';
 import { RefreshEvent } from 'lightning/refresh';
+import { refreshApex } from '@salesforce/apex';
 import RowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
 import AvailableProductRowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import saveOrderProduct from '@salesforce/apex/OrderProductsController.saveOrderProduct';
@@ -30,6 +31,7 @@ import Label_Toast_Error_Order_Product_Not_Saved from '@salesforce/label/c.Order
 import Label_Toast_Error_ReadOnly_Mode from '@salesforce/label/c.OrderProducts_Toast_Error_ReadOnly_Mode';
 import Label_Toast_Order_Activated from '@salesforce/label/c.OrderProducts_Toast_Order_Activated';
 import Label_Toast_Error_Unable_To_Activate_Order from '@salesforce/label/c.OrderProducts_Toast_Error_Unable_To_Activate_Order';
+import Label_Dialog_Confirm_Activate_Order from '@salesforce/label/c.OrderProducts_Dialog_Confirm_Activate_Order';
 
 export default class OrderProducts extends LightningElement {
     @api recordId;
@@ -114,6 +116,19 @@ export default class OrderProducts extends LightningElement {
     handleActivateBtnClick(event) {
         if (this.isActivatedOrder()) { return; }
 
+        LightningConfirm.open({
+            message: Label_Dialog_Confirm_Activate_Order,
+            variant: 'header',
+            label: '',
+            theme: 'warning',
+        }).then((result) => {
+            if (result) {
+                this.doActivateOrder();
+            }
+        });
+    }
+
+    doActivateOrder() {
         activateOrder({ orderId: this.recordId }).then((result) => {
             this.orderStatus = 'Activated';
             this.showToastMessage(Label_Toast_Order_Activated, 'success');
@@ -121,7 +136,7 @@ export default class OrderProducts extends LightningElement {
         }).catch((error) => {
             this.showToastMessage(Label_Toast_Error_Unable_To_Activate_Order, 'error');
             console.log('Activation failed: ' + JSON.stringify(error, null, 4));
-        })
+        });
     }
 
     handleRowAction(event) {
