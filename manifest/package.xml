@@ -14,6 +14,7 @@
         <members>AvailableProductsControllerTest</members>
         <members>OrderConfirmationGateway</members>
         <members>OrderConfirmation</members>
+        <members>OrderConfirmationQueueJob</members>
         <name>ApexClass</name>
     </types>
     <types>

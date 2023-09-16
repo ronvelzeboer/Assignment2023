@@ -27,6 +27,11 @@ public with sharing class OrderConfirmationGateway {
     }
 
     private static String buildOrderConfirmationJson(Order order, List<OrderItem> orderItems) {
+        OrderConfirmation dataStructure = buildOrderConfirmationObjectStructure(order, orderItems);
+        return JSON.serializePretty(dataStructure, false);
+    }
+
+    private static OrderConfirmation buildOrderConfirmationObjectStructure(Order order, List<OrderItem> orderItems) {
         OrderConfirmation data = new OrderConfirmation();
         data.accountNumber = order.Account.AccountNumber;
         data.orderNumber = order.OrderNumber;
@@ -42,7 +47,7 @@ public with sharing class OrderConfirmationGateway {
             orderProduct.quantity = Integer.valueOf(orderItem.Quantity);
             data.orderProducts.add(orderProduct);
         }
-        return JSON.serializePretty(data, false);
+        return data;
     }
 
     private static void createAndSaveOrderConfirmationQueueItem(Order order, String confirmationData) {
