@@ -32,7 +32,11 @@ public with sharing class OrderProductsController
 
     @AuraEnabled
     public static void activateOrder(Id orderId) {
+        // activate order in salesforce
         OrderManager.activateOrderByOrderId(orderId);
+
+        // initiate order confirmation to external system
+        OrderConfirmationGateway.registerOrder(orderId);
     }
 
     @AuraEnabled

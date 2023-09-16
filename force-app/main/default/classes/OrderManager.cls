@@ -32,13 +32,22 @@ public with sharing class OrderManager {
 
             // TODO: add message to custom application log instead of System.debug
             System.debug('OrderManager:activateOrderByOrderId -> ' + e.getMessage());
-
         }
+    }
+
+    public static Order getOrderById(Id orderId) {
+        List<Order> record = [
+            SELECT Id, Status, Account.Name, Account.AccountNumber, Type, OrderNumber, OrderConfirmationStatus__c FROM Order WHERE Id = :orderId
+        ];
+        if (record.isEmpty()) {
+            throw new IllegalArgumentException('No order found with Id: ' + orderId);
+        }
+        return record[0];
     }
 
     public static List<OrderItem> getOrderItemsByOrderId(Id orderId) {
         List<OrderItem> records = [
-                SELECT Id, PricebookEntryId, Product2.Name, Quantity, UnitPrice, TotalPrice, Status__c
+                SELECT Id, PricebookEntryId, Product2.Name, Product2.ProductCode, Quantity, UnitPrice, TotalPrice, Status__c
                 FROM OrderItem
                 WHERE OrderId = :orderId
         ];

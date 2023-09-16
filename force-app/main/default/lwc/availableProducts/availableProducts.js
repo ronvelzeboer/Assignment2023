@@ -26,6 +26,8 @@ export default class AvailableProducts extends LightningElement {
     @track sortedBy = 'productName';
     @track sortedDirection = 'asc';
 
+    // TODO: implement search functionality in case there are more then 500 records.
+    maxRecordLimit = 500;
     cssLoaded = false;
     subscription = null;
     assignedOrderProductMap = {};
@@ -81,7 +83,7 @@ export default class AvailableProducts extends LightningElement {
         }
     }
 
-    @wire(getProductListItems, { pricebookId: '$selectedPricebookId', recordLimit: '200'})
+    @wire(getProductListItems, { pricebookId: '$selectedPricebookId', recordLimit: '$maxRecordLimit' })
     wiredProductListItems({ error, data }) {
         if (data) {
             this.productListItems = data;
