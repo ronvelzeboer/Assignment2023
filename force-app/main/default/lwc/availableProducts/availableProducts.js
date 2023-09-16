@@ -4,6 +4,7 @@
 
 import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import { publish, subscribe, MessageContext } from 'lightning/messageService';
 import { refreshApex } from '@salesforce/apex'
@@ -16,6 +17,7 @@ import getOrderProductListItems from '@salesforce/apex/OrderProductsController.g
 import Label_Title from '@salesforce/label/c.AvailableProducts_Title';
 import Label_TableHeader_Name from '@salesforce/label/c.AvailableProducts_TableHeader_Name';
 import Label_TableHeader_ListPrice from '@salesforce/label/c.AvailableProducts_TableHeader_ListPrice';
+import Label_Toast_Error_Unexpected_Error from '@salesforce/label/c.Generic_Toast_Error_Unexpected_Error';
 
 export default class AvailableProducts extends LightningElement {
     @api recordId;
@@ -63,8 +65,8 @@ export default class AvailableProducts extends LightningElement {
                 };
             });
         } else if (error) {
+            this.showToastMessage(Label_Toast_Error_Unexpected_Error, 'error');
             console.log('Error:' + JSON.stringify(error));
-            // TODO
         }
     }
 
@@ -74,6 +76,7 @@ export default class AvailableProducts extends LightningElement {
             this.selectedPricebookId = getFieldValue(data, 'Order.Pricebook2Id');
 
         } else if (error) {
+            this.showToastMessage(Label_Toast_Error_Unexpected_Error, 'error');
             console.log(error);
         }
     }
@@ -86,6 +89,7 @@ export default class AvailableProducts extends LightningElement {
         } else if (error) {
             console.log(error);
             this.productListItems = [];
+            this.showToastMessage(Label_Toast_Error_Unexpected_Error, 'error');
         }
     }
 
@@ -97,6 +101,7 @@ export default class AvailableProducts extends LightningElement {
                 this.addRowAction(event);
             }
         } catch (error) {
+            this.showToastMessage(Label_Toast_Error_Unexpected_Error, 'error');
             console.log('An error occurred while processing the row action event. Error: ' + error.message);
         }
     }
@@ -190,6 +195,7 @@ export default class AvailableProducts extends LightningElement {
         loadStyle(this, stylesheets + '/global.css').then(() => {
             console.log("Styles loaded");
         }).catch(error => {
+            this.showToastMessage(Label_Toast_Error_Unexpected_Error, 'error');
             console.log(error);
         });
     }

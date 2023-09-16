@@ -12,6 +12,7 @@
         <members>PricebookManagerTest</members>
         <members>OrderProductsControllerTest</members>
         <members>AvailableProductsControllerTest</members>
+        <members>OrderConfirmationGateway</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -44,6 +45,10 @@
         <members>OrderProducts_TableHeader_UnitPrice</members>
         <members>OrderProducts_Title</members>
         <name>CustomLabel</name>
+    </types>
+    <types>
+        <members>stylesheets</members>
+        <name>StaticResource</name>
     </types>
     <version>58.0</version>
 </Package>

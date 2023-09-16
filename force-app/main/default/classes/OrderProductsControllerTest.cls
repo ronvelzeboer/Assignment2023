@@ -69,7 +69,6 @@ private class OrderProductsControllerTest {
         // verify record is deleted
         List<OrderItem> deletedOrderItem = [SELECT Id FROM OrderItem WHERE Id = :testOrderItem.Id];
         System.assertEquals(0, deletedOrderItem.size());
-
     }
 
     @IsTest
@@ -105,9 +104,12 @@ private class OrderProductsControllerTest {
         OrderProductsController.saveOrderProduct(listItem);
         Test.stopTest();
 
+        // retrieve order item
         List<OrderItem> existingOrderItem = [
             SELECT Id, UnitPrice, Quantity FROM OrderItem WHERE PricebookEntryId = :testPricebookEntry.Id AND OrderId = :testOrderId
         ];
+
+        // verify existence and values
         System.assertEquals(1, existingOrderItem.size());
         System.assertEquals(listItem.unitPrice, existingOrderItem[0].UnitPrice);
         System.assertEquals(listItem.quantity, existingOrderItem[0].Quantity);

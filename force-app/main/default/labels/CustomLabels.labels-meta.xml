@@ -22,6 +22,20 @@
         <value>Available Products</value>
     </labels>
     <labels>
+        <fullName>Generic_Toast_Error_Unexpected_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Generic_Toast_Error_Unexpected_Error</shortDescription>
+        <value>An unexpected error occurred! Please contact your system administrator!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Button_Activate</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Button_Activate</shortDescription>
+        <value>Activate</value>
+    </labels>
+    <labels>
         <fullName>OrderProducts_TableHeader_Name</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -62,5 +76,54 @@
         <protected>true</protected>
         <shortDescription>OrderProducts_Title</shortDescription>
         <value>Order Products</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Error_Order_Product_Not_Deleted</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Error_Order_Product_Not_Deleted</shortDescription>
+        <value>An error occurred while trying to delete &apos;%ProductName%&apos;!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Error_Order_Product_Not_Saved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Error_Order_Product_Not_Saved</shortDescription>
+        <value>Could not save &apos;%ProductName%&apos;. Please reload the page!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Error_ReadOnly_Mode</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Error_ReadOnly_Mode</shortDescription>
+        <value>Order products cannot be modified while the order status is set to &apos;Activated&apos;</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Error_Unable_To_Activate_Order</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Error_Unable_To_Activate_Order</shortDescription>
+        <value>Unable to activate order!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Order_Activated</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Order_Activated</shortDescription>
+        <value>Order successfully activated!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Order_Product_Deleted</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Order_Product_Deleted</shortDescription>
+        <value>Order product &apos;%ProductName%&apos; deleted!</value>
+    </labels>
+    <labels>
+        <fullName>OrderProducts_Toast_Order_Product_Saved</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Toast_Order_Product_Saved</shortDescription>
+        <value>Order product &apos;%ProductName%&apos; successfully added!</value>
     </labels>
 </CustomLabels>
