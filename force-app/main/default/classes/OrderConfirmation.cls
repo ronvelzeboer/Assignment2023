@@ -15,4 +15,8 @@ public class OrderConfirmation {
         public Decimal unitPrice;
         public Integer quantity;
     }
+
+    public static OrderConfirmation deserialize(String jsonData) {
+        return (OrderConfirmation) JSON.deserializeStrict(jsonData, OrderConfirmation.class);
+    }
 }

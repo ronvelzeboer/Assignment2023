@@ -15,6 +15,7 @@
         <members>OrderConfirmationGateway</members>
         <members>OrderConfirmation</members>
         <members>OrderConfirmationQueueJob</members>
+        <members>OrderConfirmationGatewayTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -51,10 +52,13 @@
     </types>
     <types>
         <members>stylesheets</members>
+        <members>MockOrderConfirmationResponse200</members>
+        <members>MockOrderConfirmationResponse500</members>
         <name>StaticResource</name>
     </types>
     <types>
         <members>OrderConfirmationQueue__c-OrderConfirmationQueueItem Layout</members>
+        <members>Order-Order Layout</members>
         <name>Layout</name>
     </types>
     <types>
