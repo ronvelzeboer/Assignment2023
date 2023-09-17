@@ -1,7 +1,7 @@
 /**
- * Created by user on 9/12/23.
+ * @author Ron Velzeboer
+ * @date 12/09/2023
  */
-
 import { LightningElement, wire, api, track } from 'lwc';
 import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
