@@ -1,9 +1,16 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @date 15/09/2023
+ * @description Class to create test data to avoid bloated test classes
  */
-
 @IsTest
 public class TestDataFactory {
+    /**
+     * @description Generates a number of unsaved test Accounts
+     * @param numRecords Number a test Account records to create
+     *
+     * @return a list of test Account
+     */
     public static List<Account> getAccountRecords(Integer numRecords) {
         List<Account> accounts = new List<Account>();
 
@@ -15,6 +22,13 @@ public class TestDataFactory {
         return accounts;
     }
 
+    /**
+     * @description Generates a number of unsaved test Contracts
+     * @param account Account to link contract to
+     * @param numRecords Number a test Contract records to create
+     *
+     * @return a list of test Contracts
+     */
     public static List<Contract> getContractTestRecords(Account account, Integer numRecords) {
         List<Contract> contracts = new List<Contract>();
 
@@ -29,6 +43,15 @@ public class TestDataFactory {
         return contracts;
     }
 
+    /**
+     * @description Generates a number of unsaved test Orders
+     * @param account Account to link order to
+     * @param contract Contract to link order to
+     * @param pricebookId Pricebook to link order to
+     * @param numRecords Number a test Order records to create
+     *
+     * @return a list of test Orders
+     */
     public static List<Order> getOrderTestRecords(Account account, Contract contract, Id pricebookId, Integer numRecords) {
         List<Order> orders = new List<Order>();
 
@@ -44,6 +67,14 @@ public class TestDataFactory {
         return orders;
     }
 
+    /**
+     * @description Generates a number of unsaved test OrderItems
+     * @param orderId order to link OrderItems to
+     * @param pricebookEntryPool List of PricebookEntries as data input for the OrderItems
+     * @param numRecords Number a test OrderItem records to create
+     *
+     * @return a list of test OrderItems
+     */
     public static List<OrderItem> getOrderItemTestRecords(Id orderId, List<PricebookEntry> pricebookEntryPool, Integer numRecords) {
         List<OrderItem> orderItems = new List<OrderItem>();
 
@@ -62,6 +93,14 @@ public class TestDataFactory {
         return orderItems;
     }
 
+    /**
+     * @description Generates a number of unsaved test PricebookEntries
+     * @param pricebookId Account to link PricebookEntry to
+     * @param productPool List of Products as data input for the PricebookEntries
+     * @param numRecords Number a test PricebookEntry records to create
+     *
+     * @return a list of test PricebookEntries
+     */
     public static List<PricebookEntry> getPricebookEntryTestRecords(Id pricebookId, List<Product2> productPool, Integer numRecords) {
         List<PricebookEntry> pricebookEntries = new List<PricebookEntry>();
 
@@ -79,6 +118,12 @@ public class TestDataFactory {
         return pricebookEntries;
     }
 
+    /**
+     * @description Generates a number of unsaved test Product2 records
+     * @param numRecords Number a test Product2 records to create
+     *
+     * @return a list of test Product2
+     */
     public static List<Product2> getProductTestRecords(Integer numRecords) {
         List<Product2> products = new List<Product2>();
 
@@ -92,6 +137,13 @@ public class TestDataFactory {
         return products;
     }
 
+    /**
+     * @description Generates a OrderConfirmationQueue__c record
+     * @param order Order to use
+     * @param orderItems OrderItem to use
+     *
+     * @return a OrderConfirmationQueue__c record
+     */
     public static OrderConfirmationQueue__c getOrderConfirmationQueueTestRecord(Order order, List<OrderItem> orderItems) {
         OrderConfirmation data = new OrderConfirmation();
         data.accountNumber = order.Account.AccountNumber;

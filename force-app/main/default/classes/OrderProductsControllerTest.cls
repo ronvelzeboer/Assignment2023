@@ -1,10 +1,14 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @data 15/09/2023
+ * @description Test class for the OrderProductController class
  */
-
 @IsTest(SeeAllData=false)
 private class OrderProductsControllerTest {
 
+    /**
+     * @description Setup shared test data
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -39,6 +43,9 @@ private class OrderProductsControllerTest {
         insert orderItemRecords;
     }
 
+    /**
+     * @description Tests the activateOrder method. Verifies if Order status is set correctly
+     */
     @IsTest
     public static void testActivateOrder() {
         // get test Order Id
@@ -54,6 +61,9 @@ private class OrderProductsControllerTest {
         System.assertEquals(KPNConstants.ORDER_STATUS_ACTIVATED, activatedOrder.Status);
     }
 
+    /**
+     * @description Test the deleteOrderProduct method and verifies if records get deleted successfully
+     */
     @IsTest
     public static void testDeleteOrderProduct() {
         // get test Order Id
@@ -71,6 +81,9 @@ private class OrderProductsControllerTest {
         System.assertEquals(0, deletedOrderItem.size());
     }
 
+    /**
+     * @description Tests the saveOrderProduct method. Verifies created OrderItem data
+     */
     @IsTest
     public static void testSaveOrderProduct() {
         // get test Order Id
@@ -115,6 +128,9 @@ private class OrderProductsControllerTest {
         System.assertEquals(listItem.quantity, existingOrderItem[0].Quantity);
     }
 
+    /**
+     * @description Tests the getOrderProductListItemsByOrderId method. Verifies if it retrieves the correct number of records
+     */
     @IsTest
     public static void testGetOrderProductListItemsByOrderId() {
         // get test Order Id

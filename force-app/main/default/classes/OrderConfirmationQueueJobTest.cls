@@ -1,10 +1,14 @@
 /**
- * Created by user on 9/16/23.
+ * @author Ron Velzeboer
+ * @date 16/09/2023
+ * @description Test class for the OrderConfirmationQueueJob class
  */
-
 @IsTest(SeeAllData=false)
 private class OrderConfirmationQueueJobTest {
 
+    /**
+     * @description Setup shared test data
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -60,6 +64,9 @@ private class OrderConfirmationQueueJobTest {
         insert queueItem;
     }
 
+    /**
+     * @description Tests scenario the order confirmation is send
+     */
     @IsTest
     static void testOrderConfirmationDelivered() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();

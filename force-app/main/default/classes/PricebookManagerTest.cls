@@ -1,10 +1,14 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @date 15/09/2023
+ * @description Test class of the PricebookManager class
  */
-
 @IsTest(SeeAllData=false)
 private class PricebookManagerTest {
 
+    /**
+     * Setup shared test data
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -21,6 +25,9 @@ private class PricebookManagerTest {
         insert pricebookEntryRecords;
     }
 
+    /**
+     * @description Test the getEntriesByPricebookId method. Verifies if the correct number of records are returned
+     */
     @IsTest
     public static void testGetEntriesByPricebookId() {
         // get standardPriceBookId

@@ -1,9 +1,13 @@
 /**
- * Created by user on 9/16/23.
+ * @author Ron Velzeboer
+ * @date 16/09/2023
+ * @description Test class for OrderConfirmationGateway
  */
-
 @IsTest(SeeAllData=false)
 private class OrderConfirmationGatewayTest {
+    /**
+     * @description Setup shared test data
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -38,6 +42,10 @@ private class OrderConfirmationGatewayTest {
         insert orderItemRecords;
     }
 
+    /**
+     * @description Test registerOrder() method to activate an order. Verifies the data in correctly set for successfull
+     * registration, meaning the OrderConfirmationQueue__c record data is correct.
+     */
     @IsTest
     static void testRegisterOrder() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
@@ -95,6 +103,9 @@ private class OrderConfirmationGatewayTest {
         }
     }
 
+    /**
+     * @description Test registerOrder() method to activate an order. Tests if assigned order has 'Activated' status
+     */
     @IsTest
     static void testRegisterOrderNotActivated() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();

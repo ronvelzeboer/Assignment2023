@@ -3,7 +3,6 @@
  * @date 15/09/2023
  * @description Test class for the AvailableProductsController class
  */
-
 @IsTest(SeeAllData=false)
 private class AvailableProductsControllerTest {
 

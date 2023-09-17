@@ -1,10 +1,14 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @date 15/09/2023
+ * @description Test class of the OrderManager class
  */
-
 @IsTest(SeeAllData=false)
 private class OrderManagerTest {
 
+    /**
+     * @description Setup shared test data
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -39,6 +43,9 @@ private class OrderManagerTest {
         insert orderItemRecords;
     }
 
+    /**
+     * @description Test activateOrderByOrderId() method, verify order is activated
+     */
     @IsTest
     public static void testActivateOrderByOrderId() {
         // get test data

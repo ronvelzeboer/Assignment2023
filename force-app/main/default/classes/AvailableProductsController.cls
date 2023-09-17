@@ -1,9 +1,8 @@
 /**
  * @author Ron Velzeboer
  * @date 15/09/2023
- * @description Controller for the LWC Available Production component
+ * @description Controller for the LWC 'Available Products' component
  */
-
 public with sharing class AvailableProductsController {
     /**
      * @description ProductListItem serves as an object to transfer data between the LWC frontend component and the

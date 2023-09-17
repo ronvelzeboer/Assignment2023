@@ -4,7 +4,6 @@
  * @description Class with constants to keep hardcoding limited to one place. This class would also be used to implement
  * Schema definitions for Records Types etc.
  */
-
 public with sharing class KPNConstants {
 
     /** Contract Related Picklist Values **/

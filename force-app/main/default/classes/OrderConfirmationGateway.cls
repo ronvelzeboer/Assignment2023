@@ -3,7 +3,6 @@
  * @date 15/09/2023
  * @description Creates Order Confirmation data and adds queue records to send to an external system
  */
-
 public with sharing class OrderConfirmationGateway {
 
     /**

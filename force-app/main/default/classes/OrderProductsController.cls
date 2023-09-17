@@ -1,9 +1,14 @@
 /**
- * Created by user on 9/14/23.
+ * @author Ron Velzeboer
+ * @date 14/09/2023
+ * @description Controller for the LWC 'Order Products' component
  */
-
 public with sharing class OrderProductsController
 {
+    /**
+     * @description OrderProductListItem serves as an object to transfer data between the LWC frontend component and the
+     * controller to loosely couple the frontend and the backed structure
+     */
     public class OrderProductListItem {
         @AuraEnabled
         public Id orderItemId { get; set; }
@@ -30,6 +35,10 @@ public with sharing class OrderProductsController
         public String status { get; set; }
     }
 
+    /**
+     * @description Activates the Order and OrderItem (Order Products) records. Then triggers the order confirmation process to the external system
+     * @param orderId Order to activate
+     */
     @AuraEnabled
     public static void activateOrder(Id orderId) {
         // activate order in salesforce
@@ -39,6 +48,11 @@ public with sharing class OrderProductsController
         OrderConfirmationGateway.registerOrder(orderId);
     }
 
+    /**
+     * @description Deletes a specific OrderItem (Order Product)
+     * @param orderProductId OrderProduct to delete
+     * @throws SecurityException in case user has no delete permissions
+     */
     @AuraEnabled
     public static void deleteOrderProduct(Id orderProductId) {
 
@@ -49,6 +63,12 @@ public with sharing class OrderProductsController
         delete item;
     }
 
+    /**
+     * @description Save Order Product after its transformed into an OrderItem
+     * @param record OrderProductListItem data transfer object
+     *
+     * @return the updated order
+     */
     @AuraEnabled
     public static OrderProductListItem saveOrderProduct(OrderProductListItem record) {
 
@@ -65,6 +85,12 @@ public with sharing class OrderProductsController
         return record;
     }
 
+    /**
+     * @description Returns a list of OrderProducts of a specific order
+     * @param orderId Order to get the OrderItems (Order Products) from
+     *
+     * @return a list of OrderProductListItem data transfer objects
+     */
     @AuraEnabled(Cacheable=true)
     public static List<OrderProductListItem> getOrderProductListItemsByOrderId(Id orderId) {
         List<OrderProductListItem> orderProducts = new List<OrderProductListItem>();
@@ -77,6 +103,12 @@ public with sharing class OrderProductsController
         return orderProducts;
     }
 
+    /**
+     * @description Mapper method to map an OrderItem record to a OrderProductListItem data transfer object
+     * @param record OrderItem to map
+     *
+     * @return a OrderProductListItem data transfer object
+     */
     public static OrderProductListItem getMappedOrderProductListItemInstance(OrderItem record) {
         OrderProductListItem listItem = new OrderProductListItem();
         listItem.orderItemId = record.Id;
@@ -89,6 +121,12 @@ public with sharing class OrderProductsController
         return listItem;
     }
 
+    /**
+     * @description Mapper method to map a OrderProductListItem data transfer object to an OrderItem
+     * @param listItem OrderProductListItem to map
+     *
+     * @return a OrderItem SObject
+     */
     public static OrderItem getMappedOrderItemInstance(OrderProductListItem listItem) {
         OrderItem record = new OrderItem(
             Id = listItem.orderItemId,

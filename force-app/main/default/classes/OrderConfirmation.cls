@@ -3,7 +3,6 @@
  * @date 16/09/2023
  * @description Data Transfer Object to convert between Order/OrderItems and the JSON structure of the external system
  */
-
 public class OrderConfirmation {
     public String accountNumber;
     public String orderNumber;
