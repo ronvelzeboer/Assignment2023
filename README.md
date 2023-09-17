@@ -6,7 +6,7 @@ Welcome!
 
 Authorize ORG
 ```
-sfdx org login web --instance-url http://MyDomainName-SandboxName.sandbox.my.salesforce.com --alias ORGALIAS
+sfdx org login web --instance-url YOURORGURL --alias ORGALIAS
 ```
 
 Deploy metadata
@@ -15,7 +15,20 @@ sfdx project deploy start --target-org ORGALIAS --source-dir force-app --ignore-
 ```
 In case the deployment is failing, I record a video which can be found here: [ADD LINK]
 
+
+## Installation
+
+- Assign 'RVAssignment' Permission Set to the user
+- Activate Order Flexi page as ORG Default (see instructions below)
+
+### Activate Order Flexi page as ORG Default
+- Goto Setup -> Lightning App Builder
+- Click Edit for 'Order_Record_Page'
+- Press 'Activation...' and click 'Assign as Org Default' 
+- Click 'Next' and then 'Save'
+
 ## Trigger Order Confirmation Batch (Anonymous Apex)
+After the order has been activated a OrderConfirmationQueue__c records is created. Execute below code in Anonymous Apex to process the Order Confirmation Queue Item. 
 
 ```
 OrderConfirmationQueueJob job = new OrderConfirmationQueueJob();

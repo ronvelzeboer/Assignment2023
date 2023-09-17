@@ -76,5 +76,9 @@
         <members>RequestCatcher</members>
         <name>RemoteSiteSetting</name>
     </types>
+    <types>
+        <members>RVAssignment</members>
+        <name>PermissionSet</name>
+    </types>
     <version>58.0</version>
 </Package>
