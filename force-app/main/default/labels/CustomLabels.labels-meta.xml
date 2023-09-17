@@ -36,6 +36,13 @@
         <value>Activate</value>
     </labels>
     <labels>
+        <fullName>OrderProducts_Dialog_Confirm_Activate_Order</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>OrderProducts_Dialog_Confirm_Activate_Order</shortDescription>
+        <value>After activation you cannot modify the order products. Click &apos;OK&apos; to continue.</value>
+    </labels>
+    <labels>
         <fullName>OrderProducts_TableHeader_Name</fullName>
         <language>en_US</language>
         <protected>true</protected>
