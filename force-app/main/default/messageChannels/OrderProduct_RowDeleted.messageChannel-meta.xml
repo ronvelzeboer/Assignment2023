@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
-    <masterLabel>OrderProduct_RowDeleted</masterLabel>
-    <isExposed>true</isExposed>
     <description>Fires when user selects a product from the Available Products list</description>
+    <isExposed>true</isExposed>
     <lightningMessageFields>
-        <fieldName>orderItemId</fieldName>
         <description>This is the record Id of the order product that is deleted</description>
+        <fieldName>orderItemId</fieldName>
     </lightningMessageFields>
     <lightningMessageFields>
-        <fieldName>pricebookEntryId</fieldName>
         <description>This is the record Id of the pricebookEntry of the order product that is deleted</description>
+        <fieldName>pricebookEntryId</fieldName>
     </lightningMessageFields>
+    <masterLabel>OrderProduct_RowDeleted</masterLabel>
 </LightningMessageChannel>

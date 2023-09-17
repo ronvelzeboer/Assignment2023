@@ -153,13 +153,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
-    <label>OrderConfirmationQueueItem</label>
+    <label>Order Confirmation Queue Item</label>
     <nameField>
         <displayFormat>OC-{000000000}</displayFormat>
         <label>OrderConfirmationQueue Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>OrderConfirmationQueueItems</pluralLabel>
+    <pluralLabel>Order Confirmation Queue Items</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
