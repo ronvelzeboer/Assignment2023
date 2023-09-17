@@ -41,8 +41,8 @@ private class OrderConfirmationGatewayTest {
     @IsTest
     static void testRegisterOrder() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
-        mock.setStaticResource('MockOrderConfirmationResponse200');
-        mock.setStatusCode(200);
+        mock.setStaticResource('MockOrderConfirmationResponse' + KPNConstants.HTTP_STATUS_CODE_OK);
+        mock.setStatusCode(KPNConstants.HTTP_STATUS_CODE_OK);
         mock.setHeader('Content-Type', 'plain/text');
 
         Test.setMock(HttpCalloutMock.class, mock);
@@ -58,9 +58,9 @@ private class OrderConfirmationGatewayTest {
 
         // create product data reduce set to verify against
         List<OrderItem> items = [
-                SELECT Id, PricebookEntryId, Product2.Name, Product2.ProductCode, Quantity, UnitPrice, TotalPrice, Status__c
-                FROM OrderItem
-                WHERE OrderId = :testOrder.Id
+            SELECT Id, PricebookEntryId, Product2.Name, Product2.ProductCode, Quantity, UnitPrice, TotalPrice, Status__c
+            FROM OrderItem
+            WHERE OrderId = :testOrder.Id
         ];
         Set<String> orderProductReduce = new Set<String>();
         for (OrderItem item : items) {
@@ -93,5 +93,30 @@ private class OrderConfirmationGatewayTest {
 
             System.assert(orderProductReduce.contains(reduceKey));
         }
+    }
+
+    @IsTest
+    static void testRegisterOrderNotActivated() {
+        StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+        mock.setStaticResource('MockOrderConfirmationResponse' + KPNConstants.HTTP_STATUS_CODE_OK);
+        mock.setStatusCode(KPNConstants.HTTP_STATUS_CODE_OK);
+        mock.setHeader('Content-Type', 'plain/text');
+
+        Test.setMock(HttpCalloutMock.class, mock);
+
+        // get test Order Id
+        Order testOrder = [SELECT Id, Status, OrderNumber, Account.AccountNumber FROM Order LIMIT 1][0];
+
+        Exception caughtException;
+
+        Test.startTest();
+        try {
+            OrderConfirmationGateway.registerOrder(testOrder.Id);
+        } catch (Exception e) {
+            caughtException = e;
+        }
+        Test.stopTest();
+
+        System.assert(caughtException.getMessage().contains('Only orders with status "Activated" will be accepted'));
     }
 }

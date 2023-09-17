@@ -1,10 +1,15 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @date 15/09/2023
+ * @description Test class for the AvailableProductsController class
  */
 
 @IsTest(SeeAllData=false)
 private class AvailableProductsControllerTest {
 
+    /**
+     * @description Setup shared test data using the TestDataFactory
+     */
     @TestSetup
     static void setup() {
         // get standardPriceBookId
@@ -21,6 +26,10 @@ private class AvailableProductsControllerTest {
         insert pricebookEntryRecords;
     }
 
+
+    /**
+     * @description Tests the getProductListItemsByPricebookId method if it returns the desired number of records
+     */
     @IsTest
     public static void testGetProductListItemsByPricebookId() {
         // get standardPriceBookId

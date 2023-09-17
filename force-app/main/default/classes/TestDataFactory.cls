@@ -91,4 +91,29 @@ public class TestDataFactory {
         }
         return products;
     }
+
+    public static OrderConfirmationQueue__c getOrderConfirmationQueueTestRecord(Order order, List<OrderItem> orderItems) {
+        OrderConfirmation data = new OrderConfirmation();
+        data.accountNumber = order.Account.AccountNumber;
+        data.orderNumber = order.OrderNumber;
+        data.type = order.Type;
+        data.status = order.Status;
+        data.orderProducts = new List<OrderConfirmation.OrderProduct>();
+
+        for (OrderItem orderItem : orderItems) {
+            OrderConfirmation.OrderProduct orderProduct = new OrderConfirmation.OrderProduct();
+            orderProduct.name = orderItem.Product2.Name;
+            orderProduct.code = orderItem.Product2.ProductCode;
+            orderProduct.unitPrice = orderItem.UnitPrice;
+            orderProduct.quantity = Integer.valueOf(orderItem.Quantity);
+            data.orderProducts.add(orderProduct);
+        }
+        String payload = OrderConfirmation.serialize(data);
+
+        return new OrderConfirmationQueue__c(
+            Order__c = order.Id,
+            Status__c = KPNConstants.ORDER_CONFIRMATION_QUEUE_ITEM_STATUS_NEW,
+            Data__c = payload
+        );
+    }
 }

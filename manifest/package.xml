@@ -16,6 +16,7 @@
         <members>OrderConfirmation</members>
         <members>OrderConfirmationQueueJob</members>
         <members>OrderConfirmationGatewayTest</members>
+        <members>OrderConfirmationQueueJobTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -59,11 +60,17 @@
     <types>
         <members>OrderConfirmationQueue__c-OrderConfirmationQueueItem Layout</members>
         <members>Order-Order Layout</members>
+        <members>OrderConfirmationEndpoint__mdt-Order Confirmation Endpoint Layout</members>
         <name>Layout</name>
     </types>
     <types>
         <members>OrderConfirmationQueue__c</members>
+        <members>OrderConfirmationEndpoint__mdt</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>OrderConfirmationEndpoint.B2B_Generic</members>
+        <name>CustomMetadata</name>
     </types>
     <version>58.0</version>
 </Package>

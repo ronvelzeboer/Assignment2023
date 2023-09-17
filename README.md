@@ -1,18 +1,28 @@
-# Salesforce DX Project: Next Steps
+# Assignment Notes
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+Welcome!
 
-## How Do You Plan to Deploy Your Changes?
+## Deploy Salesforce DX Project
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+Authorize ORG
+```
+sfdx org login web --instance-url http://MyDomainName-SandboxName.sandbox.my.salesforce.com --alias ORGALIAS
+```
 
-## Configure Your Salesforce DX Project
+Deploy metadata
+```
+sfdx project deploy start --target-org ORGALIAS --source-dir force-app --ignore-conflicts --wait 90 --test-level RunAllTestsInOrg
+```
+In case the deployment is failing, I record a video which can be found here: [ADD LINK]
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+## Trigger Order Confirmation Batch (Anonymous Apex)
 
-## Read All About It
+```
+OrderConfirmationQueueJob job = new OrderConfirmationQueueJob();
+Database.executeBatch(job, 10);
+```
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+## Improvement List
+
+- Search bar in Available Products LWC component
+

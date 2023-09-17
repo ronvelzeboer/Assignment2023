@@ -1,9 +1,18 @@
 /**
- * Created by user on 9/15/23.
+ * @author Ron Velzeboer
+ * @date 15/09/2023
+ * @description Creates Order Confirmation data and adds queue records to send to an external system
  */
 
 public with sharing class OrderConfirmationGateway {
 
+    /**
+     * @description Tests if order is 'Activated' and calls methods to create the OrderConfirmationStatus__c record and
+     * updates the OrderConfirmationStatus__c of the order
+     * @param orderId the order for which an order confirmation needs to be send
+     *
+     * @throws OrderConfirmationGatewayException in case the order status is not 'Activated'
+     */
     public static void registerOrder(Id orderId) {
         try {
             Order order = OrderManager.getOrderById(orderId);
@@ -21,16 +30,34 @@ public with sharing class OrderConfirmationGateway {
         }
     }
 
+    /**
+     * @description Updates the OrderConfirmationStatus__c of the order to 'In Progress'
+     * @param order Order to be processed
+     */
     private static void updateOrderConfirmationStatusOnOrder(Order order) {
         order.OrderConfirmationStatus__c = KPNConstants.ORDER_CONFIRMATION_STATUS_IN_PROGRESS;
         update order;
     }
 
+    /**
+     * @description Manage the creation of the Order Confirmation JSON data
+     * @param order Order to be processed
+     * @param orderItems OrderItems to be processed
+     *
+     * @return
+     */
     private static String buildOrderConfirmationJson(Order order, List<OrderItem> orderItems) {
         OrderConfirmation dataStructure = buildOrderConfirmationObjectStructure(order, orderItems);
-        return JSON.serializePretty(dataStructure, false);
+        return OrderConfirmation.serialize(dataStructure);
     }
 
+    /**
+     * @description Builds an OrderConfirmation object based on the Order and OrderItems
+     * @param order Order to be processed
+     * @param orderItems OrderItems to be processed
+     *
+     * @return OrderConfirmation object based on input
+     */
     private static OrderConfirmation buildOrderConfirmationObjectStructure(Order order, List<OrderItem> orderItems) {
         OrderConfirmation data = new OrderConfirmation();
         data.accountNumber = order.Account.AccountNumber;
@@ -50,6 +77,12 @@ public with sharing class OrderConfirmationGateway {
         return data;
     }
 
+    /**
+     * @description Creates a OrderConfirmationQueue__c record (with the JSON data to send) for the order confirmation
+     * of the Order which is picked up by a Batch Job.
+     * @param order Order to be processed
+     * @param confirmationData Order Confirmation JSON data structure
+     */
     private static void createAndSaveOrderConfirmationQueueItem(Order order, String confirmationData) {
         OrderConfirmationQueue__c queueItem = new OrderConfirmationQueue__c(
             Order__c = order.Id,
@@ -59,5 +92,8 @@ public with sharing class OrderConfirmationGateway {
         insert queueItem;
     }
 
+    /**
+     * @description Custom Exception class
+     */
     public class OrderConfirmationGatewayException extends Exception {}
 }
