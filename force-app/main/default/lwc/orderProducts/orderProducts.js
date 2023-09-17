@@ -2,6 +2,7 @@
  * @author Ron Velzeboer
  * @date 12/09/2023
  */
+ /** Standard **/
 import { LightningElement, wire, api, track } from 'lwc';
 import { subscribe, publish, MessageContext } from 'lightning/messageService';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -9,13 +10,18 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import LightningConfirm from 'lightning/confirm';
 import { RefreshEvent } from 'lightning/refresh';
 import { refreshApex } from '@salesforce/apex';
+
+/** MessageChannels **/
 import RowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
 import AvailableProductRowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
+
+/** RPC **/
 import saveOrderProduct from '@salesforce/apex/OrderProductsController.saveOrderProduct';
 import deleteOrderProduct from '@salesforce/apex/OrderProductsController.deleteOrderProduct';
 import activateOrder from '@salesforce/apex/OrderProductsController.activateOrder';
 import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
 
+/** Labels **/
 import Label_Title from '@salesforce/label/c.OrderProducts_Title';
 import Label_Button_Activate from '@salesforce/label/c.OrderProducts_Button_Activate';
 import Label_TableHeader_Name from '@salesforce/label/c.OrderProducts_TableHeader_Name';

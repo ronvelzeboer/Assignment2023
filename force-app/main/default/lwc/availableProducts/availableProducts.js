@@ -2,6 +2,7 @@
  * @author Ron Velzeboer
  * @date 12/09/2023
  */
+ /** Standard **/
 import { LightningElement, wire, api, track } from 'lwc';
 import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -9,15 +10,21 @@ import { loadStyle } from 'lightning/platformResourceLoader';
 import { publish, subscribe, MessageContext } from 'lightning/messageService';
 import { refreshApex } from '@salesforce/apex'
 import stylesheets from '@salesforce/resourceUrl/stylesheets';
+
+/** MessageChannels **/
 import RowSelectedChannel from '@salesforce/messageChannel/AvailableProduct_RowSelected__c';
 import OrderProductRowDeletedChannel from '@salesforce/messageChannel/OrderProduct_RowDeleted__c';
+
+/** RPC **/
 import getProductListItems from '@salesforce/apex/AvailableProductsController.getProductListItemsByPricebookId';
 import getOrderProductListItems from '@salesforce/apex/OrderProductsController.getOrderProductListItemsByOrderId';
 
+/** Labels **/
 import Label_Title from '@salesforce/label/c.AvailableProducts_Title';
 import Label_TableHeader_Name from '@salesforce/label/c.AvailableProducts_TableHeader_Name';
 import Label_TableHeader_ListPrice from '@salesforce/label/c.AvailableProducts_TableHeader_ListPrice';
 import Label_Toast_Error_Unexpected_Error from '@salesforce/label/c.Generic_Toast_Error_Unexpected_Error';
+
 
 export default class AvailableProducts extends LightningElement {
     @api recordId;
