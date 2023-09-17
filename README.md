@@ -3,7 +3,7 @@
 Welcome to my assignment implementation! This page describes the installation/deployment and other handy information. I also included a short design decision section and improvement points.
 
 ## 1) Deployment / Installation Instructions
-(In case the deployment is failing, I recorded a demo video which can be found [here](_demo/AssignmentDemo.mp4))
+(In case the deployment is failing, I recorded a demo video which can be found [here](_demoVideo/AssignmentDemo.mp4))
 
 - Deploy to ORG with SFDX (see instructions below)
 - Activate Order Flexi page as ORG Default (see instructions below)
