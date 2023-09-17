@@ -16,7 +16,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>RetryCount__c</field>
+                <field>DeliveryAttemptCount__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
