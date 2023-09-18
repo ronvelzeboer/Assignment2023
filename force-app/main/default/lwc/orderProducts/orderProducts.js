@@ -216,7 +216,7 @@ export default class OrderProducts extends LightningElement {
             existingRecord.totalPrice = existingRecord.quantity * existingRecord.unitPrice;
 
             this.orderProducts = this.orderProducts.map((obj, index) => {
-                if (index == recordIndex) {
+                if (index === recordIndex) {
                     obj = existingRecord;
                 }
                 return obj;
