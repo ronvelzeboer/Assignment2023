@@ -33,7 +33,7 @@ sfdx project deploy start --target-org ORGALIAS --source-dir force-app --ignore-
 ### 2.1) Trigger Order Confirmation Batch (Anonymous Apex)
 After the order has been activated a OrderConfirmationQueue__c records is created. Execute below code in Anonymous Apex to process the Order Confirmation Queue Item. 
 
-To view to message deliver to the external system, please go to order confirmation endpoint location: [https://rvkpnassignment.requestcatcher.com](https://rvkpnassignment.requestcatcher.com)
+To view to message delivered to the external system, please go to the order confirmation endpoint location: [https://rvkpnassignment.requestcatcher.com](https://rvkpnassignment.requestcatcher.com)
 
 After you opened above endpoint location please execute:
 
