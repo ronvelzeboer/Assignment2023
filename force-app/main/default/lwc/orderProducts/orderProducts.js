@@ -211,10 +211,16 @@ export default class OrderProducts extends LightningElement {
         } else {
             // clone record to avoid readonly issues
             const existingRecord = Object.assign({}, this.orderProducts[recordIndex]);
+
             existingRecord.quantity += data.quantity;
             existingRecord.totalPrice = existingRecord.quantity * existingRecord.unitPrice;
-            this.orderProducts[recordIndex]=existingRecord;
-            this.orderProducts = [...this.orderProducts];
+
+            this.orderProducts = this.orderProducts.map((obj, index) => {
+                if (index == recordIndex) {
+                    obj = existingRecord;
+                }
+                return obj;
+            })
         }
     }
 
