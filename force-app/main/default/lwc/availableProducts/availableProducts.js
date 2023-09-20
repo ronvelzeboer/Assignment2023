@@ -154,26 +154,24 @@ export default class AvailableProducts extends LightningElement {
         };
         let isReverseSort = this.sortedDirection === 'asc' ? 1 : -1;
 
-        // Do sort as normal
-        parseData.sort((a, b) => {
-            return isReverseSort * ((keyValue(a) > keyValue(b)) - (keyValue(b) > keyValue(a)));
-        });
+        parseData.map((obj) => {
+            let sortKeyBase = keyValue(obj);
 
-        // Add weighted sort to product assigned to the order so they appear on top while incorporating the normal sort functionality
-        parseData.map((e, index) => {
-            e.sortWeight = (numberOfListProducts - index);
-
-            if (this.assignedOrderProductMap[e.pricebookEntryId]) {
-                e.sortWeight += numberOfListProducts;
-                e.backgroundStyle = 'datatable-assigned-row';
-            } else {
-                e.backgroundStyle = '';
+            if (typeof sortKeyBase === 'number') {
+                sortKeyBase = String(sortKeyBase).padStart(12, '0');
             }
-        });
+            if (this.assignedOrderProductMap[obj.pricebookEntryId]) {
+                obj.sortKey = (isReverseSort == 1 ? 0 : 1) + sortKeyBase;
+                obj.backgroundStyle = 'datatable-assigned-row';
+            } else {
+                obj.sortKey = (isReverseSort == 1 ? 1 : 0) + sortKeyBase;
+                obj.backgroundStyle = '';
+            }
+            return obj;
+        })
 
-        // Re-sort based on weighted sort, descending order, so highest weighted product is on top
         parseData.sort((a, b) => {
-            return -1 * ((a['sortWeight'] > b['sortWeight']) - (b['sortWeight'] > a['sortWeight']));
+            return isReverseSort * a.sortKey.localeCompare(b.sortKey);
         });
 
         this.productListItems = parseData;
