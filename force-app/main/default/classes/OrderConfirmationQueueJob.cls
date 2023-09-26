@@ -6,7 +6,7 @@
  */
 public class OrderConfirmationQueueJob implements Database.Batchable<SObject>, Database.AllowsCallouts {
 
-    public String query = 'SELECT Id, Order__c, DeliveryAttemptCount__c, Data__c FROM OrderConfirmationQueue__c WHERE Status__c IN :queueItemStatusList LIMIT 10';
+    public String query = 'SELECT Id, Order__c, DeliveryAttemptCount__c, Data__c FROM OrderConfirmationQueue__c WHERE Status__c IN :queueItemStatusList';
 
     /**
      * @param bc BatchableContext
